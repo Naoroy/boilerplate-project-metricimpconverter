@@ -2,51 +2,54 @@
 *
 *
 *       Complete the handler logic below
-*       
-*       
+*
+*
 */
 
-function ConvertHandler() {
-  
+module.exports = function ConvertHandler() {
+
   this.getNum = function(input) {
-    var result;
-    
-    return result;
+    const m = input.match(/[^a-z]/gi);
+    if(!m) return null;
+    if(m.includes('/')) {
+      const fraction = m.join('').split('/').filter(x => x != '');
+      if(fraction.length != 2) return null;
+
+      return fraction.reduce((a, b) => Number(a) / Number(b));
+    }
+
+    return Number(m.join(''));
   };
   
   this.getUnit = function(input) {
-    var result;
-    
+    const result = input.match(/gal|L|lbs|kg|mi|km/);
+    console.log(result);
     return result;
   };
   
   this.getReturnUnit = function(initUnit) {
-    var result;
-    
+    const result = initUnit;
     return result;
   };
 
   this.spellOutUnit = function(unit) {
-    var result;
+    const result = unit;
     
     return result;
   };
   
   this.convert = function(initNum, initUnit) {
-    const galToL = 3.78541;
-    const lbsToKg = 0.453592;
-    const miToKm = 1.60934;
-    var result;
+    //const galToL = 3.78541;
+    //const lbsToKg = 0.453592;
+    //const miToKm = 1.60934;
+    let result;
     
     return result;
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    var result;
+    let result;
     
     return result;
   };
-  
-}
-
-module.exports = ConvertHandler;
+};
