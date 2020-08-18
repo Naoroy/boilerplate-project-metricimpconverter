@@ -20,15 +20,24 @@ module.exports = function ConvertHandler() {
 
     return Number(m.join(''));
   };
-  
+
   this.getUnit = function(input) {
-    const result = input.match(/gal|L|lbs|kg|mi|km/);
-    console.log(result);
-    return result;
+    const result = input.match(/(gal|lbs|l|kg|mi|km)$/gi);
+    return result? result[0]: null;
   };
-  
+
   this.getReturnUnit = function(initUnit) {
-    const result = initUnit;
+    let result;
+    const units = {
+      gal: 'l',
+      lbs: 'kg',
+      mi: 'km'
+    };
+
+    for (let prop in units) {
+      if(prop == initUnit) result = units[prop];
+      else if(units[prop] == initUnit) result = prop
+    }
     return result;
   };
 
@@ -39,10 +48,31 @@ module.exports = function ConvertHandler() {
   };
   
   this.convert = function(initNum, initUnit) {
-    //const galToL = 3.78541;
-    //const lbsToKg = 0.453592;
-    //const miToKm = 1.60934;
     let result;
+    const galToL = 3.78541;
+    const miToKm = 1.60934;
+    const lbsToKg = 0.453592;
+    
+    switch(initUnit) {
+    case 'gal': 
+      result = initNum * galToL;
+      break;
+    case 'l':
+      result = initNum / galToL;
+      break;
+    case 'mi':
+      result = initNum * miToKm;
+      break;
+    case 'km':
+      result = initNum / miToKm;
+      break;
+    case 'lbs':
+      result = initNum * lbsToKg;
+      break;
+    case 'kg':
+      result = initNum / lbsToKg;
+      break;
+    }
     
     return result;
   };
