@@ -40,22 +40,22 @@ suite('Unit Tests', function(){
       assert.equal(convertHandler.getNum('2.5/4lbs'), 2.5/4);
       done();
     });
-    
+
     test('Invalid Input (double fraction)', function(done) {
       assert.equal(convertHandler.getNum('3/lbs'), null);
       assert.equal(convertHandler.getNum('2/42/2lbs'), null);
       done();
     });
-    
+
     test('No Numerical Input', function(done) {
-      assert.equal(convertHandler.getNum(''), null);
-      assert.equal(convertHandler.getNum('kg'), null);
+      assert.equal(convertHandler.getNum('l'), 1);
+      assert.equal(convertHandler.getNum('mi'), 1);
+      assert.equal(convertHandler.getNum('kg'), 1);
       done();
     });
   });
-  
+
   suite('Function convertHandler.getUnit(input)', function() {
-    
     test('For Each Valid Unit Inputs', function(done) {
       var input = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
       input.forEach(function(unit) {
@@ -63,46 +63,52 @@ suite('Unit Tests', function(){
       });
       done();
     });
-    
+
     test('Unknown Unit Input', function(done) {
       assert.equal(convertHandler.getUnit('24aag'), null);
       assert.equal(convertHandler.getUnit('24kgs'), null);
       done();
     });
-    
   });
-  
+
   suite('Function convertHandler.getReturnUnit(initUnit)', function() {
-    
     test('For Each Valid Unit Inputs', function(done) {
       const input = ['gal','l','mi','km','lbs','kg'];
-      const expect = ['l','gal','km','mi','kg','lbs'];
+      const expect = ['L','gal','km','mi','kg','lbs'];
       input.forEach(function(unit, i) {
         assert.equal(convertHandler.getReturnUnit(unit), expect[i]);
       });
       done();
     });
   });
-  
-  suite('Function convertHandler.spellOutUnit(unit)', function() {
 
+  suite('Function convertHandler.spellOutUnit(unit)', function() {
     test('For Each Valid Unit Inputs', function(done) {
-      //see above example for hint
-      assert.equal(1, 1);
+      const input = [
+        { initNum: 1, initUnit: 'gal', returnNum: 3.7854, returnUnit: 'L' },
+        { initNum: 1, initUnit: 'mi', returnNum: 1.60934, returnUnit: 'km' },
+        { initNum: 1, initUnit: 'lbs', returnNum: 0.45359, returnUnit: 'kg' },
+      ];
+      const expect = [
+        '1gal converts to 3.7854L',
+        '1mi converts to 1.60934km',
+        '1lbs converts to 0.45359kg',
+      ];
+      input.forEach(function(data, i) {
+        assert.equal(convertHandler.spellOutUnit(data), expect[i]);
+      });
       done();
     });
-
   });
 
   suite('Function convertHandler.convert(num, unit)', function() {
-
     test('Gal to L', function(done) {
       const input = [5, 'gal'];
       const expected = 18.9271;
 
       assert.approximately(
         convertHandler.convert(input[0],input[1]),
-        expected, 0.1); //0.1 tolerance
+        expected, 0.1);
       done();
     });
 
@@ -155,7 +161,5 @@ suite('Unit Tests', function(){
         expected, 0.1); //0.1 tolerance
       done();
     });
-
   });
-
 });
